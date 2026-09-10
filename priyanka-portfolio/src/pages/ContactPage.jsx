@@ -1,4 +1,8 @@
 import { Link, Paper, Stack, Typography } from "@mui/material";
+import PhoneIcon from "@mui/icons-material/Phone";
+import EmailIcon from "@mui/icons-material/Email";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import { portfolioData } from "../data/portfolioData";
 
 function ContactPage() {
@@ -13,29 +17,43 @@ function ContactPage() {
             Open to product engineering opportunities, technical collaboration,
             and architecture-focused conversations.
           </Typography>
-          <Typography variant="body2">
-            <strong>Email:</strong>{" "}
-            <Link href={`mailto:${personal.email}`} underline="hover">
-              {personal.email}
-            </Link>
-          </Typography>
-          <Typography variant="body2">
-            <strong>Phone:</strong> {personal.phone}
-          </Typography>
-          <Typography variant="body2">
-            <strong>LinkedIn:</strong>{" "}
-            <Link
-              href={personal.linkedin}
-              target="_blank"
-              rel="noreferrer"
-              underline="hover"
-            >
-              {personal.linkedin.replace("https://", "")}
-            </Link>
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            <strong>Location:</strong> {personal.location}
-          </Typography>
+          <Stack spacing={1} sx={{ pt: 0.5 }}>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <EmailIcon fontSize="small" />
+              <Typography variant="body2">
+                <strong>Email:</strong>{" "}
+                <Link href={`mailto:${personal.email}`} underline="hover">
+                  {personal.email}
+                </Link>
+              </Typography>
+            </Stack>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <PhoneIcon fontSize="small" />
+              <Typography variant="body2">
+                <strong>Phone:</strong> {personal.phone}
+              </Typography>
+            </Stack>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <LinkedInIcon fontSize="small" />
+              <Typography variant="body2">
+                <strong>LinkedIn:</strong>{" "}
+                <Link
+                  href={personal.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  underline="hover"
+                >
+                  {personal.linkedin.replace("https://", "")}
+                </Link>
+              </Typography>
+            </Stack>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <LocationOnIcon fontSize="small" />
+              <Typography variant="body2" color="text.secondary">
+                <strong>Location:</strong> {personal.location}
+              </Typography>
+            </Stack>
+          </Stack>
         </Stack>
       </Paper>
 

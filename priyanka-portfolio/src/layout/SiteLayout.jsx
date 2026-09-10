@@ -17,6 +17,10 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import PhoneIcon from "@mui/icons-material/Phone";
+import EmailIcon from "@mui/icons-material/Email";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import {
   Link as RouterLink,
   NavLink,
@@ -49,6 +53,13 @@ function SiteLayout({ children }) {
       fontSize: "0.82rem",
       lineHeight: 1.35,
     },
+  };
+
+  const contactItemSx = {
+    display: "flex",
+    alignItems: "center",
+    gap: 0.75,
+    minWidth: 0,
   };
 
   const isActiveRoute = (to) => location.pathname === to;
@@ -168,36 +179,53 @@ function SiteLayout({ children }) {
                 }}
               >
                 <Stack spacing={1.25}>
-                  <Typography variant="body2">{personal.location}</Typography>
-                  <Link
-                    href={`mailto:${personal.email}`}
-                    underline="hover"
-                    color="inherit"
-                    sx={{
-                      fontSize: "0.82rem",
-                      overflowWrap: "anywhere",
-                      lineHeight: 1.3,
-                    }}
-                  >
-                    {personal.email}
-                  </Link>
-                  <Typography variant="body2" sx={{ overflowWrap: "anywhere" }}>
-                    {personal.phone}
-                  </Typography>
-                  <Link
-                    href={personal.linkedin}
-                    target="_blank"
-                    rel="noreferrer"
-                    underline="hover"
-                    color="inherit"
-                    sx={{
-                      fontSize: "0.82rem",
-                      overflowWrap: "anywhere",
-                      lineHeight: 1.3,
-                    }}
-                  >
-                    LinkedIn Profile
-                  </Link>
+                  <Box sx={contactItemSx}>
+                    <LocationOnIcon fontSize="small" sx={{ flexShrink: 0 }} />
+                    <Typography variant="body2">{personal.location}</Typography>
+                  </Box>
+                  <Box sx={contactItemSx}>
+                    <EmailIcon fontSize="small" sx={{ flexShrink: 0 }} />
+                    <Link
+                      href={`mailto:${personal.email}`}
+                      underline="hover"
+                      color="inherit"
+                      sx={{
+                        fontSize: "0.82rem",
+                        overflowWrap: "anywhere",
+                        lineHeight: 1.3,
+                        minWidth: 0,
+                      }}
+                    >
+                      {personal.email}
+                    </Link>
+                  </Box>
+                  <Box sx={contactItemSx}>
+                    <PhoneIcon fontSize="small" sx={{ flexShrink: 0 }} />
+                    <Typography
+                      variant="body2"
+                      sx={{ overflowWrap: "anywhere" }}
+                    >
+                      {personal.phone}
+                    </Typography>
+                  </Box>
+                  <Box sx={contactItemSx}>
+                    <LinkedInIcon fontSize="small" sx={{ flexShrink: 0 }} />
+                    <Link
+                      href={personal.linkedin}
+                      target="_blank"
+                      rel="noreferrer"
+                      underline="hover"
+                      color="inherit"
+                      sx={{
+                        fontSize: "0.82rem",
+                        overflowWrap: "anywhere",
+                        lineHeight: 1.3,
+                        minWidth: 0,
+                      }}
+                    >
+                      LinkedIn Profile
+                    </Link>
+                  </Box>
 
                   <Divider sx={{ borderColor: "rgba(255,255,255,0.25)" }} />
 
