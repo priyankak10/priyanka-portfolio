@@ -10,7 +10,7 @@ function ContactPage() {
 
   return (
     <Stack spacing={2}>
-      <Paper elevation={0} sx={{ p: { xs: 2.5, sm: 4 }, borderRadius: 3 }}>
+      <Paper elevation={0} sx={{ p: { xs: 2.5, sm: 4 }, borderRadius: 2 }}>
         <Stack spacing={1}>
           <Typography variant="h4">Let us connect</Typography>
           <Typography variant="body1" color="text.secondary">
@@ -57,7 +57,7 @@ function ContactPage() {
         </Stack>
       </Paper>
 
-      <Paper elevation={0} sx={{ p: { xs: 2.5, sm: 4 }, borderRadius: 3 }}>
+      <Paper elevation={0} sx={{ p: { xs: 2.5, sm: 4 }, borderRadius: 2 }}>
         <Stack spacing={1.5}>
           <Typography variant="h5">Education</Typography>
           {education.map((item) => (
@@ -76,7 +76,7 @@ function ContactPage() {
         </Stack>
       </Paper>
 
-      <Paper elevation={0} sx={{ p: { xs: 2.5, sm: 4 }, borderRadius: 3 }}>
+      <Paper elevation={0} sx={{ p: { xs: 2.5, sm: 4 }, borderRadius: 2 }}>
         <Stack spacing={1.2}>
           <Typography variant="h5">Awards and Certifications</Typography>
           {awardsAndCertifications.map((item) => (

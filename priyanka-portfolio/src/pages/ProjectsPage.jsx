@@ -15,7 +15,7 @@ function ProjectsPage() {
       <Grid container spacing={2}>
         {keyOwnership.map((project) => (
           <Grid key={project.area} size={{ xs: 12, md: 6 }}>
-            <Paper sx={{ p: 2.5, borderRadius: 3 }} elevation={0}>
+            <Paper sx={{ p: 2.5, borderRadius: 2 }} elevation={0}>
               <Stack spacing={1.25}>
                 <Typography variant="h6">{project.area}</Typography>
                 {project.impact.map((line) => (
