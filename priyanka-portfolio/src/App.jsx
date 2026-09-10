@@ -9,13 +9,13 @@ const appTheme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#1e293b",
+      main: "#2f3f55",
     },
     secondary: {
-      main: "#0ea5a5",
+      main: "#0f766e",
     },
     background: {
-      default: "#eef3f8",
+      default: "#f7f9fc",
       paper: "#ffffff",
     },
   },
@@ -29,9 +29,9 @@ const appTheme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundColor: "#eef3f8",
+          backgroundColor: "#f7f9fc",
           backgroundImage:
-            "radial-gradient(circle at 15% -10%, rgba(14,165,165,0.12), transparent 36%), radial-gradient(circle at 85% -15%, rgba(30,41,59,0.1), transparent 34%), linear-gradient(180deg, #f8fbff 0%, #eef3f8 100%)",
+            "radial-gradient(circle at 15% -10%, rgba(27,168,160,0.08), transparent 36%), radial-gradient(circle at 85% -15%, rgba(47,63,85,0.06), transparent 34%), linear-gradient(180deg, #fcfdff 0%, #f4f7fb 100%)",
           backgroundAttachment: "fixed",
         },
       },
@@ -39,7 +39,7 @@ const appTheme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          border: "1px solid #e2e8f0",
+          border: "1px solid #e7edf4",
         },
       },
     },
