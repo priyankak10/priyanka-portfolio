@@ -21,6 +21,7 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import GitHubIcon from "@mui/icons-material/GitHub";
 import {
   Link as RouterLink,
   NavLink,
@@ -49,7 +50,7 @@ function SiteLayout({ children }) {
     display: "grid",
     gap: 0.4,
     "& li": {
-      color: "#e2e8f0",
+      color: "rgba(255,255,255,0.88)",
       fontSize: "0.82rem",
       lineHeight: 1.35,
     },
@@ -91,7 +92,15 @@ function SiteLayout({ children }) {
 
   return (
     <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-      <AppBar position="fixed" color="primary" elevation={1}>
+      <AppBar
+        position="fixed"
+        color="primary"
+        elevation={1}
+        sx={{
+          background:
+            "linear-gradient(90deg, #334155 0%, #0f766e 56%, #14b8a6 100%)",
+        }}
+      >
         <Toolbar sx={{ minHeight: { xs: 60, sm: 66 } }}>
           <Typography
             variant="h6"
@@ -150,12 +159,12 @@ function SiteLayout({ children }) {
         sx={{
           flexGrow: 1,
           p: 1,
-          pt: { xs: "74px", sm: "80px" },
-          pb: { xs: "70px", sm: "76px" },
+          pt: { xs: "60px", sm: "66px" },
+          pb: { xs: "54px", sm: "58px" },
           bgcolor: "transparent",
         }}
       >
-        <Container maxWidth="xl" sx={{ py: { xs: 1, sm: 1.5 } }}>
+        <Container maxWidth="xl" disableGutters sx={{ py: 1, px: 1 }}>
           <Box sx={{ display: "flex", gap: 1.5, alignItems: "stretch" }}>
             <Box
               component="aside"
@@ -169,13 +178,14 @@ function SiteLayout({ children }) {
                 sx={{
                   position: "sticky",
                   top: 8,
-                  minHeight: "calc(100vh - 80px - 76px - 16px)",
-                  borderRadius: 2,
+                  borderRadius: 1,
+                  height: "fit-content",
                   p: 1.5,
-                  color: "#fff",
+                  color: "#f8fbff",
                   background:
-                    "linear-gradient(165deg, rgba(30,41,59,1) 0%, rgba(15,118,110,1) 100%)",
-                  boxShadow: "0 14px 30px rgba(15, 23, 42, 0.25)",
+                    "linear-gradient(165deg, rgba(51,65,85,0.96) 0%, rgba(15,118,110,0.94) 54%, rgba(20,184,166,0.96) 100%)",
+                  border: "1px solid rgba(255,255,255,0.16)",
+                  boxShadow: "0 16px 30px rgba(37, 99, 235, 0.18)",
                 }}
               >
                 <Stack spacing={1.25}>
@@ -224,6 +234,24 @@ function SiteLayout({ children }) {
                       }}
                     >
                       LinkedIn Profile
+                    </Link>
+                  </Box>
+                  <Box sx={contactItemSx}>
+                    <GitHubIcon fontSize="small" sx={{ flexShrink: 0 }} />
+                    <Link
+                      href={personal.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      underline="hover"
+                      color="inherit"
+                      sx={{
+                        fontSize: "0.82rem",
+                        overflowWrap: "anywhere",
+                        lineHeight: 1.3,
+                        minWidth: 0,
+                      }}
+                    >
+                      GitHub Profile
                     </Link>
                   </Box>
 
