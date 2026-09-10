@@ -4,11 +4,14 @@ import {
   Box,
   Button,
   Container,
+  Divider,
   Drawer,
   IconButton,
+  Link,
   List,
   ListItemButton,
   ListItemText,
+  Stack,
   Toolbar,
   Typography,
   useMediaQuery,
@@ -21,6 +24,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
+import { portfolioData } from "../data/portfolioData";
 
 const navItems = [
   { label: "Home", to: "/" },
@@ -33,6 +37,19 @@ function SiteLayout({ children }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const location = useLocation();
+  const { personal, sidebar } = portfolioData;
+
+  const sidebarListSx = {
+    m: 0,
+    pl: 2,
+    display: "grid",
+    gap: 0.4,
+    "& li": {
+      color: "#e2e8f0",
+      fontSize: "0.82rem",
+      lineHeight: 1.35,
+    },
+  };
 
   const isActiveRoute = (to) => location.pathname === to;
 
@@ -64,7 +81,7 @@ function SiteLayout({ children }) {
   return (
     <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <AppBar position="fixed" color="primary" elevation={1}>
-        <Toolbar sx={{ minHeight: { xs: 64, sm: 72 } }}>
+        <Toolbar sx={{ minHeight: { xs: 60, sm: 66 } }}>
           <Typography
             variant="h6"
             component={RouterLink}
@@ -121,13 +138,105 @@ function SiteLayout({ children }) {
         component="main"
         sx={{
           flexGrow: 1,
-          pt: { xs: "80px", sm: "88px" },
-          pb: { xs: "76px", sm: "84px" },
-          bgcolor: "background.default",
+          p: 1,
+          pt: { xs: "74px", sm: "80px" },
+          pb: { xs: "70px", sm: "76px" },
+          bgcolor: "transparent",
         }}
       >
-        <Container maxWidth="lg" sx={{ py: { xs: 2, sm: 3 } }}>
-          {children ?? <Outlet />}
+        <Container maxWidth="xl" sx={{ py: { xs: 1, sm: 1.5 } }}>
+          <Box sx={{ display: "flex", gap: 1.5, alignItems: "stretch" }}>
+            <Box
+              component="aside"
+              sx={{
+                width: 245,
+                flexShrink: 0,
+                display: { xs: "none", lg: "block" },
+              }}
+            >
+              <Box
+                sx={{
+                  position: "sticky",
+                  top: 8,
+                  minHeight: "calc(100vh - 80px - 76px - 16px)",
+                  borderRadius: 2,
+                  p: 1.5,
+                  color: "#fff",
+                  background:
+                    "linear-gradient(165deg, rgba(30,41,59,1) 0%, rgba(15,118,110,1) 100%)",
+                  boxShadow: "0 14px 30px rgba(15, 23, 42, 0.25)",
+                }}
+              >
+                <Stack spacing={1.25}>
+                  <Typography variant="body2">{personal.location}</Typography>
+                  <Link
+                    href={`mailto:${personal.email}`}
+                    underline="hover"
+                    color="inherit"
+                    sx={{
+                      fontSize: "0.82rem",
+                      overflowWrap: "anywhere",
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {personal.email}
+                  </Link>
+                  <Typography variant="body2" sx={{ overflowWrap: "anywhere" }}>
+                    {personal.phone}
+                  </Typography>
+                  <Link
+                    href={personal.linkedin}
+                    target="_blank"
+                    rel="noreferrer"
+                    underline="hover"
+                    color="inherit"
+                    sx={{
+                      fontSize: "0.82rem",
+                      overflowWrap: "anywhere",
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    LinkedIn Profile
+                  </Link>
+
+                  <Divider sx={{ borderColor: "rgba(255,255,255,0.25)" }} />
+
+                  <Typography variant="subtitle2" fontWeight={600}>
+                    Core Stack
+                  </Typography>
+                  <Box component="ul" sx={sidebarListSx}>
+                    {sidebar.coreStack.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </Box>
+
+                  <Divider sx={{ borderColor: "rgba(255,255,255,0.25)" }} />
+
+                  <Typography variant="subtitle2" fontWeight={600}>
+                    Engineering Tools
+                  </Typography>
+                  <Box component="ul" sx={sidebarListSx}>
+                    {sidebar.engineeringTools.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </Box>
+
+                  <Divider sx={{ borderColor: "rgba(255,255,255,0.25)" }} />
+
+                  <Typography variant="subtitle2" fontWeight={600}>
+                    Strengths
+                  </Typography>
+                  <Box component="ul" sx={sidebarListSx}>
+                    {sidebar.strengths.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </Box>
+                </Stack>
+              </Box>
+            </Box>
+
+            <Box sx={{ flex: 1, minWidth: 0 }}>{children ?? <Outlet />}</Box>
+          </Box>
         </Container>
       </Box>
 
@@ -139,15 +248,22 @@ function SiteLayout({ children }) {
       >
         <Toolbar
           sx={{
-            minHeight: { xs: 60, sm: 64 },
+            minHeight: { xs: 54, sm: 58 },
             justifyContent: "space-between",
-            gap: 1,
+            gap: 0.75,
           }}
         >
           <Typography variant="body2" color="text.secondary">
             © {new Date().getFullYear()} Priyanka
           </Typography>
-          <Box sx={{ display: "flex", gap: { xs: 0.5, sm: 1 } }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: { xs: 0.25, sm: 0.75 },
+              flexWrap: "wrap",
+              justifyContent: "flex-end",
+            }}
+          >
             {navItems.map((item) => (
               <Button
                 key={item.to}
