@@ -9,17 +9,40 @@ const appTheme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#0f172a",
+      main: "#1e293b",
+    },
+    secondary: {
+      main: "#0ea5a5",
     },
     background: {
-      default: "#f5f7fb",
+      default: "#eef3f8",
+      paper: "#ffffff",
     },
   },
   shape: {
-    borderRadius: 14,
+    borderRadius: 12,
   },
   typography: {
     fontFamily: '"Poppins", "Segoe UI", sans-serif',
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: "#eef3f8",
+          backgroundImage:
+            "radial-gradient(circle at 15% -10%, rgba(14,165,165,0.12), transparent 36%), radial-gradient(circle at 85% -15%, rgba(30,41,59,0.1), transparent 34%), linear-gradient(180deg, #f8fbff 0%, #eef3f8 100%)",
+          backgroundAttachment: "fixed",
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          border: "1px solid #e2e8f0",
+        },
+      },
+    },
   },
 });
 
