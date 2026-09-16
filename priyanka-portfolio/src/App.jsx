@@ -4,6 +4,7 @@ import SiteLayout from "./layout/SiteLayout";
 import ContactPage from "./pages/ContactPage";
 import HomePage from "./pages/HomePage";
 import ProjectsPage from "./pages/ProjectsPage";
+import ResumePage from "./pages/ResumePage";
 
 const appTheme = createTheme({
   palette: {
@@ -49,6 +50,7 @@ const appTheme = createTheme({
 const routeConfig = [
   { path: "/", element: <HomePage /> },
   { path: "/projects", element: <ProjectsPage /> },
+  { path: "/resume", element: <ResumePage /> },
   { path: "/contact", element: <ContactPage /> },
 ];
 

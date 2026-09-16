@@ -8,6 +8,36 @@ export const portfolioData = {
     linkedin: "https://linkedin.com/in/priyanka-kumari-cse",
     github: "https://github.com/priyankak10",
   },
+  resumes: [
+    {
+      title: "Plain Text Resume",
+      description:
+        "A simpler ATS-friendly version with a minimal layout and straightforward formatting.",
+      previewUrl: "/assets/Priyanka_Kumari_Resume_Plain.pdf",
+      downloads: [
+        {
+          label: "Download PDF",
+          href: "/assets/Priyanka_Kumari_Resume_Plain.pdf",
+        },
+        {
+          label: "Download DOC",
+          href: "/assets/Priyanka_Kumari_Resume_Plain.doc",
+        },
+      ],
+      previewNote: "Preview opens the PDF version in-browser.",
+    },
+    {
+      title: "Word Template Resume",
+      description:
+        "A feature-rich format for recruiter review, with a polished layout and clearly grouped experience.",
+      previewUrl: "/assets/Priyanka_Kumari_Resume.pdf",
+      downloads: [
+        { label: "Download PDF", href: "/assets/Priyanka_Kumari_Resume.pdf" },
+        { label: "Download DOC", href: "/assets/Priyanka_Kumari_Resume.doc" },
+      ],
+      previewNote: "Preview opens the PDF version in-browser.",
+    },
+  ],
   summary:
     "Software Engineer with 9+ years of experience delivering enterprise engineering platforms across React frontend, Node.js microservices, and .NET systems. Primary impact includes full ownership of CI Tool WebUI, ownership of core CI Tool backend 4 API services, frontend ownership of APK Infra Client, and end-to-end ownership of PLCPortal. Delivered feature-driven solutions for CI reporting, build orchestration, PR progress, and program visibility in unified operational workflows.",
   skills: {
