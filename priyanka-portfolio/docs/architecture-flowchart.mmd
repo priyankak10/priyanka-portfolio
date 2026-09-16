@@ -1,0 +1,47 @@
+flowchart TB
+    subgraph L1["1. Entry Layer"]
+        A([🌐 User Browser]) --> B[index.html]
+        B --> C[src/main.jsx]
+        C --> D[src/App.jsx]
+    end
+
+    subgraph L2["2. App Shell Layer"]
+        D --> E[⚙ ThemeProvider + CssBaseline]
+        D --> F[🧭 HashRouter]
+        F --> G[SiteLayout]
+        G --> H[Top AppBar Navigation]
+        G --> I[Desktop Sidebar]
+        G --> J[Bottom AppBar]
+    end
+
+    subgraph L3["3. Route Layer"]
+        G --> K[Outlet Route Content]
+        K --> L[HomePage]
+        K --> M[ProjectsPage]
+        K --> N[ResumePage]
+        K --> O[ContactPage]
+    end
+
+    subgraph L4["4. Shared Data Layer"]
+        P[(📚 src/data/portfolioData.js)] --> I
+        P --> L
+        P --> M
+        P --> N
+        P --> O
+        Q[(⏱ getExperienceTimeline helpers)] --> L
+        R[(🧾 Resume metadata)] --> N
+    end
+
+    subgraph L5["5. Resume Asset Layer"]
+        N --> S[📄 PDF preview iframe]
+        N --> T[⬇ Download PDF and DOC actions]
+        T --> U[(📦 public/assets resume files)]
+    end
+
+    subgraph L6["6. Build and Deploy Layer"]
+        V[🛠 Vite Build Pipeline] --> W[(dist static assets)]
+        W --> X[(gh-pages branch)]
+        X --> Y[🚀 GitHub Pages Live Site]
+        Z[vite.config.js base path] --> V
+        AA[HashRouter route style] --> Y
+    end
