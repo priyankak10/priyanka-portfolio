@@ -114,7 +114,7 @@ function SiteLayout({ children }) {
               letterSpacing: 0.4,
             }}
           >
-            Priyanka Portfolio
+            Portfolio
           </Typography>
 
           <Box sx={{ ml: "auto", display: { xs: "none", sm: "flex" }, gap: 1 }}>
