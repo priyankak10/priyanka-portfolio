@@ -1,6 +1,7 @@
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import SiteLayout from "./layout/SiteLayout";
+import { ChatProvider } from "./chatbot/chatState";
 import AssistantPage from "./pages/AssistantPage";
 import ContactPage from "./pages/ContactPage";
 import HomePage from "./pages/HomePage";
@@ -61,19 +62,21 @@ function App() {
     <ThemeProvider theme={appTheme}>
       <CssBaseline />
       <HashRouter>
-        <Routes>
-          <Route element={<SiteLayout />}>
-            {routeConfig.map((route) => (
-              <Route
-                key={route.path}
-                index={route.path === "/"}
-                path={route.path === "/" ? undefined : route.path}
-                element={route.element}
-              />
-            ))}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Route>
-        </Routes>
+        <ChatProvider>
+          <Routes>
+            <Route element={<SiteLayout />}>
+              {routeConfig.map((route) => (
+                <Route
+                  key={route.path}
+                  index={route.path === "/"}
+                  path={route.path === "/" ? undefined : route.path}
+                  element={route.element}
+                />
+              ))}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Route>
+          </Routes>
+        </ChatProvider>
       </HashRouter>
     </ThemeProvider>
   );

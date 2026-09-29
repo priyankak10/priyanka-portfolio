@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import {
   Box,
@@ -15,19 +15,13 @@ import {
   answerProfileQuestion,
   getChatSuggestions,
 } from "./profileKnowledgeBase";
+import { useAssistantChat } from "./chatState";
 
 const singleLineChipSx = {
   flex: "0 0 auto",
   "& .MuiChip-label": {
     whiteSpace: "nowrap",
   },
-};
-
-const initialMessage = {
-  id: "welcome",
-  role: "assistant",
-  text: "Ask about Priyanka's experience, skills, ownership, strengths, recruiter fit, education, resume, awards, or contact details. Answers are restricted to the profile data in this portfolio.",
-  citations: [],
 };
 
 const inlineLinkPattern =
@@ -145,8 +139,7 @@ function ProfileChatPanel({
   promptPlaceholder = "Ask about profile, skills, ownership, fit, resume or contact",
 }) {
   const [inputValue, setInputValue] = useState("");
-  const [messages, setMessages] = useState([initialMessage]);
-  const nextMessageId = useRef(1);
+  const { messages, setMessages, nextMessageIdRef } = useAssistantChat();
   const theme = useTheme();
   const suggestions = useMemo(() => getChatSuggestions(), []);
 
@@ -155,8 +148,8 @@ function ProfileChatPanel({
     if (!question) return;
 
     const response = answerProfileQuestion(question);
-    const messageIdBase = nextMessageId.current;
-    nextMessageId.current += 1;
+    const messageIdBase = nextMessageIdRef.current;
+    nextMessageIdRef.current += 1;
 
     setMessages((currentMessages) => [
       ...currentMessages,

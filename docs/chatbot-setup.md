@@ -184,6 +184,74 @@ What was added:
 - a note explaining why it is not full LLM-based RAG yet
 - a recommended backend upgrade path for true RAG
 
+## Shared Chat History Implementation
+
+### Goal
+
+Ensure the floating assistant launcher and the dedicated Ask Priyanka page behave as the same conversation instead of two separate local chat sessions.
+
+### Why this was needed
+
+Previously, both surfaces mounted their own independent chat state. That created a poor experience where a user could ask one question in the floating bubble and then see a different conversation when opening the full assistant page.
+
+For a portfolio assistant, the desired behavior is continuity: the conversation should feel like one assistant experience regardless of which entry point is used.
+
+### Implementation approach
+
+The solution was to move the chat state into a shared React context, then consume that context from the shared `ProfileChatPanel` component.
+
+Files involved:
+
+- `src/chatbot/chatState.js`
+- `src/chatbot/ProfileChatPanel.jsx`
+- `src/App.jsx`
+
+### Shared state design
+
+`src/chatbot/chatState.js` defines:
+
+- `ChatContext`
+- `ChatProvider`
+- `useAssistantChat`
+- a shared `messages` array
+- a shared `nextMessageIdRef` counter
+
+The provider stores the active message history in React state and exposes it to all mounted assistant components.
+
+### App-level wiring
+
+`src/App.jsx` wraps the app with `ChatProvider` so the state sits above the route tree and remains available across navigation.
+
+This keeps the conversation independent from the specific route being rendered, which is important because the same user may move between the home page, a project page, and the assistant page without losing context.
+
+### Panel behavior
+
+`ProfileChatPanel.jsx` was updated to stop managing its own local `messages` state. Instead, it:
+
+- reads `messages` from `useAssistantChat()`
+- writes new user and assistant replies via `setMessages(...)`
+- keeps one shared welcome message at initialization
+- preserves a single auto-incrementing message ID source so message keys stay unique across both surfaces
+
+This means both the floating assistant and the page-based assistant render from the same message array and therefore show the same conversation history.
+
+### Result
+
+The app now behaves like a single assistant experience:
+
+- same conversation history in floating launcher
+- same conversation history on the dedicated Ask Priyanka page
+- no duplicate local chat state between route-based and floating entry points
+- consistent answer generation and UI behavior across both surfaces
+
+### Validation
+
+After this change, the project was checked with:
+
+- `npm run build`
+
+Result: build passed successfully. The only note was the existing Vite warning about chunk size, which is non-blocking and unrelated to the shared chat logic.
+
 ## Why This Approach Was Chosen
 
 This approach was chosen because it fits the current deployment model and protects data access boundaries.
