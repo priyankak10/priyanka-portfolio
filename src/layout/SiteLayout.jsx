@@ -29,6 +29,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
+import ProfileChatbot from "../chatbot/ProfileChatbot";
 import { portfolioData } from "../data/portfolioData";
 
 const navItems = [
@@ -339,6 +340,8 @@ function SiteLayout({ children }) {
           </Box>
         </Toolbar>
       </AppBar>
+
+      <ProfileChatbot />
     </Box>
   );
 }
