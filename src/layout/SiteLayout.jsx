@@ -34,6 +34,7 @@ import { portfolioData } from "../data/portfolioData";
 
 const navItems = [
   { label: "Home", to: "/" },
+  { label: "Ask Priyanka", to: "/assistant" },
   { label: "Projects", to: "/projects" },
   { label: "Resume", to: "/resume" },
   { label: "Contact", to: "/contact" },

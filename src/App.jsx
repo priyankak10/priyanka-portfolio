@@ -1,6 +1,7 @@
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import SiteLayout from "./layout/SiteLayout";
+import AssistantPage from "./pages/AssistantPage";
 import ContactPage from "./pages/ContactPage";
 import HomePage from "./pages/HomePage";
 import ProjectsPage from "./pages/ProjectsPage";
@@ -49,6 +50,7 @@ const appTheme = createTheme({
 
 const routeConfig = [
   { path: "/", element: <HomePage /> },
+  { path: "/assistant", element: <AssistantPage /> },
   { path: "/projects", element: <ProjectsPage /> },
   { path: "/resume", element: <ResumePage /> },
   { path: "/contact", element: <ContactPage /> },

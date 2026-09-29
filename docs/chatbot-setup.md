@@ -24,9 +24,12 @@ The assistant now:
 
 - answers only from the profile data already present in the app
 - uses retrieval over structured portfolio content
+- supports more polished recruiter-style answers for fit, strengths, ownership, and experience-summary questions
 - returns low-risk, grounded answers
 - refuses questions when confidence is too low instead of inventing information
-- is available globally through a floating chat button
+- is available through a dedicated Ask Priyanka page
+- is reachable from the main header navigation and a Home page call-to-action button
+- also remains available as a floating chatbot launcher for quick access across the site
 
 ## Source Data Used
 
@@ -51,11 +54,14 @@ This file already contains the content needed for profile-grounded answers, incl
 
 - `src/chatbot/profileKnowledgeBase.js`
 - `src/chatbot/ProfileChatbot.jsx`
+- `src/chatbot/ProfileChatPanel.jsx`
+- `src/pages/AssistantPage.jsx`
 - `docs/chatbot-setup.md`
 
 ### Updated
 
 - `src/layout/SiteLayout.jsx`
+- `src/pages/HomePage.jsx`
 - `README.md`
 
 ## Implementation Details
@@ -111,24 +117,45 @@ This is the core mechanism that enforces the requirement: answer from profile da
 File:
 
 - `src/chatbot/ProfileChatbot.jsx`
+- `src/chatbot/ProfileChatPanel.jsx`
+- `src/pages/AssistantPage.jsx`
 
 What it does:
 
-- adds a floating chatbot launcher using Material UI `Fab`
-- opens a fixed chat panel
+- uses a shared chat panel component so the same assistant experience can be rendered in a dedicated page
 - provides a welcome message explaining the assistant is profile-only
 - supports free-text questions
 - shows suggested prompts for common questions
 - renders user and assistant messages in separate bubbles
 - displays lightweight citations showing which knowledge sections were matched
 
+Additional UI enhancement:
+
+- the site now includes a dedicated Ask Priyanka page in navigation
+- the Home page uses a smaller call-to-action button to send visitors to that page instead of embedding the assistant in the middle of the page
+- a floating chatbot button is also mounted globally so visitors can open the assistant without leaving the current page
+
 Suggested example prompts include:
 
 - What are Priyanka's core skills?
-- Summarize Priyanka's current role.
-- Which projects did Priyanka own?
-- How can I contact Priyanka?
-- What awards and certifications does Priyanka have?
+- Give me a recruiter summary of Priyanka.
+- Why is Priyanka a strong fit for a full-stack role?
+- What has Priyanka owned end to end?
+- How many years of experience does Priyanka have?
+
+### 2a. Recruiter-Style Answering Improvements
+
+The retrieval logic was improved so answers are more polished for recruiter-oriented questions, not just literal keyword lookups.
+
+Examples of supported recruiter-style intent:
+
+- recruiter summary
+- role fit and hiring-fit questions
+- strengths summary
+- ownership and leadership summary
+- years of experience summary
+
+These answers are still grounded to the same profile data and include citations from the matched knowledge sections.
 
 ### 3. Layout Integration
 

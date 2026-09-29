@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Chip,
   Divider,
   Grid,
@@ -8,6 +9,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import { getExperienceTimeline, portfolioData } from "../data/portfolioData";
 
 function HomePage() {
@@ -64,6 +66,9 @@ function HomePage() {
             flexWrap="wrap"
             sx={{ pt: 0.5 }}
           >
+            <Button component={RouterLink} to="/assistant" variant="contained">
+              Ask Priyanka
+            </Button>
             <Link
               href="/contact"
               underline="hover"

@@ -2,10 +2,11 @@ import { getExperienceTimeline, portfolioData } from "../data/portfolioData";
 
 const suggestionPrompts = [
   "What are Priyanka's core skills?",
-  "Summarize Priyanka's current role.",
-  "Which projects did Priyanka own?",
+  "Give me a recruiter summary of Priyanka.",
+  "Why is Priyanka a strong fit for a full-stack role?",
+  "What has Priyanka owned end to end?",
   "How can I contact Priyanka?",
-  "What awards and certifications does Priyanka have?",
+  "How many years of experience does Priyanka have?",
 ];
 
 const stopWords = new Set([
@@ -17,9 +18,11 @@ const stopWords = new Set([
   "can",
   "did",
   "do",
+  "does",
   "for",
   "from",
   "get",
+  "good",
   "has",
   "have",
   "her",
@@ -33,6 +36,7 @@ const stopWords = new Set([
   "on",
   "or",
   "she",
+  "should",
   "tell",
   "the",
   "their",
@@ -63,6 +67,16 @@ const queryAliases = {
     "frontend",
     "backend",
   ],
+  recruiter: [
+    "recruiter",
+    "hire",
+    "fit",
+    "candidate",
+    "qualified",
+    "strengths",
+    "summary",
+    "introduce",
+  ],
   summary: ["summary", "profile", "about", "introduction", "intro"],
   experience: [
     "experience",
@@ -82,6 +96,10 @@ const queryAliases = {
     "impact",
     "owned",
     "delivered",
+    "leadership",
+    "led",
+    "lead",
+    "end-to-end",
   ],
   education: ["education", "degree", "college", "school", "university"],
   awards: ["award", "awards", "certification", "certifications", "recognition"],
@@ -125,6 +143,7 @@ const buildKnowledgeBase = () => {
     education,
     awardsAndCertifications,
     resumes,
+    sidebar,
   } = portfolioData;
 
   const experienceTimeline = getExperienceTimeline();
@@ -244,6 +263,25 @@ const buildKnowledgeBase = () => {
       answer: `${item.area}: ${item.impact.slice(0, 2).join(" ")}`,
       keywords: [item.area, "ownership", "project", "impact", ...item.impact],
     })),
+    {
+      id: "strengths-overview",
+      section: "recruiter",
+      title: "Strengths overview",
+      content: `Core stack: ${sidebar.coreStack.join(", ")}. Engineering tools: ${sidebar.engineeringTools.join(", ")}. Strengths: ${sidebar.strengths.join(", ")}.`,
+      answer: [
+        `- Core stack: ${sidebar.coreStack.join(", ")}`,
+        `- Engineering tools: ${sidebar.engineeringTools.join(", ")}`,
+        `- Strengths: ${sidebar.strengths.join(", ")}`,
+      ].join("\n"),
+      keywords: [
+        "strengths",
+        "core stack",
+        "engineering tools",
+        ...sidebar.coreStack,
+        ...sidebar.engineeringTools,
+        ...sidebar.strengths,
+      ],
+    },
     ...education.map((item, index) => ({
       id: `education-${index}`,
       section: "education",
@@ -314,6 +352,30 @@ const buildKnowledgeBase = () => {
 };
 
 const knowledgeBase = buildKnowledgeBase();
+const knowledgeById = Object.fromEntries(
+  knowledgeBase.map((entry) => [entry.id, entry]),
+);
+
+const getExperienceLabel = () => {
+  const matched = portfolioData.summary.match(/\b\d+\+ years\b/i);
+
+  if (matched) {
+    return matched[0];
+  }
+
+  const earliestRole = getExperienceTimeline().at(-1);
+  if (!earliestRole?.parsedStartDate) return "multiple years";
+
+  const now = new Date();
+  const totalMonths =
+    (now.getFullYear() - earliestRole.parsedStartDate.getFullYear()) * 12 +
+    (now.getMonth() - earliestRole.parsedStartDate.getMonth());
+  const years = Math.max(1, Math.floor(totalMonths / 12));
+
+  return `${years}+ years`;
+};
+
+const experienceLabel = getExperienceLabel();
 
 const expandQueryTokens = (tokens) => {
   const expanded = new Set(tokens);
@@ -355,6 +417,137 @@ const getSectionHint = (queryTokens) => {
   }
 
   return null;
+};
+
+const citationsFromIds = (ids) =>
+  unique(ids)
+    .map((id) => knowledgeById[id])
+    .filter(Boolean)
+    .map((entry) => ({
+      id: entry.id,
+      title: entry.title,
+      section: entry.section,
+    }));
+
+const recruiterIntents = [
+  {
+    id: "recruiter-summary",
+    phrases: ["recruiter summary", "candidate summary", "quick summary"],
+    tokens: ["recruiter", "summary", "introduce"],
+    answer: () =>
+      `Priyanka Kumari is a ${portfolioData.personal.title} with ${experienceLabel} of experience across React frontend, Node.js microservices, and .NET systems. Based on the profile, her strongest ownership areas include the CI Tool WebUI, core CI Tool backend API services, frontend ownership of APK Infra Client, and end-to-end ownership of PLCPortal.`,
+    citations: [
+      "personal-summary",
+      "experience-timeline",
+      "ownership-1",
+      "ownership-2",
+      "ownership-3",
+      "ownership-4",
+    ],
+    matchedSections: ["summary", "experience", "projects"],
+  },
+  {
+    id: "full-stack-fit",
+    phrases: [
+      "full stack role",
+      "full-stack role",
+      "good fit",
+      "strong fit",
+      "why hire",
+    ],
+    tokens: [
+      "hire",
+      "fit",
+      "qualified",
+      "candidate",
+      "fullstack",
+      "full-stack",
+    ],
+    answer: () =>
+      [
+        "Based on the profile data, Priyanka looks strongest for full-stack and platform engineering roles.",
+        `- ${experienceLabel} of experience across React frontend, Node.js microservices, and .NET systems.`,
+        "- Hands-on ownership of both UI and backend systems, including CI Tool WebUI and core CI Tool API services.",
+        "- Delivery experience in CI/CD, Kubernetes migration, platform reliability, and operational workflows.",
+        "- Strong match for roles that need end-to-end execution, production ownership, and fast adaptation to new tools.",
+      ].join("\n"),
+    citations: [
+      "personal-summary",
+      "skills-overview",
+      "strengths-overview",
+      "ownership-0",
+      "ownership-1",
+      "ownership-2",
+    ],
+    matchedSections: ["summary", "skills", "recruiter", "projects"],
+  },
+  {
+    id: "ownership-summary",
+    phrases: ["end to end", "end-to-end", "owned end to end"],
+    tokens: ["ownership", "owned", "owner", "leadership", "lead", "led"],
+    answer: () =>
+      [
+        "Ownership areas called out in the profile include:",
+        "- CI Tool WebUI: created and owned the WebUI aligned to CI reporting and tracking requirements.",
+        "- CI Tool Backend Microservices: owned API services across PR, program, build, and queue domains.",
+        "- APK Infra Client UI: frontend ownership for app-tag based compatibility automation workflows.",
+        "- PLCPortal: end-to-end ownership of features, bug fixes, enhancements, and production changes.",
+        "- Kubernetes migration: led exploration, pre-production testing, and production rollout from Cloud Foundry to self-hosted Kubernetes.",
+      ].join("\n"),
+    citations: [
+      "ownership-0",
+      "ownership-1",
+      "ownership-2",
+      "ownership-3",
+      "ownership-4",
+    ],
+    matchedSections: ["projects"],
+  },
+  {
+    id: "experience-years",
+    phrases: ["how many years", "years of experience"],
+    tokens: ["years", "experience", "senior", "seniority"],
+    answer: () =>
+      `The profile summary states ${experienceLabel} of experience. The experience timeline in the portfolio shows Priyanka at Intel Technology India Pvt. Ltd. from Dec 2016 to Present.`,
+    citations: ["personal-summary", "experience-timeline"],
+    matchedSections: ["summary", "experience"],
+  },
+  {
+    id: "strengths-summary",
+    phrases: ["what are her strengths", "core strengths", "best at"],
+    tokens: ["strengths", "strongest", "specialize", "specialise"],
+    answer: () =>
+      [
+        "The profile highlights these strengths:",
+        `- Technical focus: ${portfolioData.sidebar.coreStack.join(", ")}`,
+        `- Delivery style: ${portfolioData.sidebar.strengths.join(", ")}`,
+        `- Engineering environment: ${portfolioData.sidebar.engineeringTools.join(", ")}`,
+      ].join("\n"),
+    citations: ["strengths-overview", "skills-overview"],
+    matchedSections: ["recruiter", "skills"],
+  },
+];
+
+const resolveRecruiterIntent = (normalizedQuestion, queryTokens) => {
+  const tokenSet = new Set(queryTokens);
+
+  const matchedIntent = recruiterIntents.find((intent) => {
+    const phraseMatched = intent.phrases.some((phrase) =>
+      normalizedQuestion.includes(phrase),
+    );
+    const tokenMatched = intent.tokens.some((token) => tokenSet.has(token));
+
+    return phraseMatched || tokenMatched;
+  });
+
+  if (!matchedIntent) return null;
+
+  return {
+    answer: matchedIntent.answer(),
+    citations: citationsFromIds(matchedIntent.citations),
+    matchedSections: matchedIntent.matchedSections,
+    confidence: "high",
+  };
 };
 
 const selectMatches = (rankedMatches) => {
@@ -425,6 +618,15 @@ export const answerProfileQuestion = (question) => {
       matchedSections: [],
       confidence: "low",
     };
+  }
+
+  const recruiterIntentAnswer = resolveRecruiterIntent(
+    normalizedQuestion,
+    expandedTokens,
+  );
+
+  if (recruiterIntentAnswer) {
+    return recruiterIntentAnswer;
   }
 
   const rankedMatches = knowledgeBase
