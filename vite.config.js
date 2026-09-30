@@ -5,4 +5,9 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [react()],
   base: "/priyanka-portfolio/",
+  server: {
+    proxy: {
+      "/api": "http://localhost:4000",
+    },
+  },
 });

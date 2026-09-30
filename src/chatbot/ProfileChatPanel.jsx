@@ -143,11 +143,10 @@ function ProfileChatPanel({
   const theme = useTheme();
   const suggestions = useMemo(() => getChatSuggestions(), []);
 
-  const submitQuestion = (rawQuestion) => {
+  const submitQuestion = async (rawQuestion) => {
     const question = rawQuestion.trim();
     if (!question) return;
 
-    const response = answerProfileQuestion(question);
     const messageIdBase = nextMessageIdRef.current;
     nextMessageIdRef.current += 1;
 
@@ -158,15 +157,46 @@ function ProfileChatPanel({
         role: "user",
         text: question,
       },
-      {
-        id: `assistant-${messageIdBase}`,
-        role: "assistant",
-        text: response.answer,
-        citations: response.citations,
-        confidence: response.confidence,
-      },
     ]);
     setInputValue("");
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Request failed: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      setMessages((currentMessages) => [
+        ...currentMessages,
+        {
+          id: `assistant-${messageIdBase}`,
+          role: "assistant",
+          text: data.answer,
+          citations: data.citations ?? [],
+          confidence: data.confidence ?? 0.8,
+        },
+      ]);
+    } catch (error) {
+      const fallback = answerProfileQuestion(question);
+
+      setMessages((currentMessages) => [
+        ...currentMessages,
+        {
+          id: `assistant-${messageIdBase}`,
+          role: "assistant",
+          text: fallback.answer,
+          citations: fallback.citations,
+          confidence: fallback.confidence,
+        },
+      ]);
+    }
   };
 
   const handleSubmit = (event) => {
